@@ -13,7 +13,7 @@ public class Network {
 
     private static final String SERVER_ADRESS = "localhost";
 //    private static final int SERVER_PORT = 8189;
-    private static final int SERVER_PORT = 8189;
+    private static final int SERVER_PORT = 8190;
     //+
     private static final File fileHistory = new File("src/Chat_ClientAndServerAndCmds_v3/resources/lib/fileHistory.txt");
     //
