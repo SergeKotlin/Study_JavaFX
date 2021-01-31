@@ -1,0 +1,41 @@
+package Chat_ClientAndServerAndCmds_v3.ChatServer.src.server.auth;
+
+import Chat_ClientAndServerAndCmds_v3.ChatServer.src.ServerApp;
+import Chat_ClientAndServerAndCmds_v3.ChatServer.src.server.User;
+
+import java.util.Arrays;
+import java.util.List;
+
+public class BaseAuthService implements AuthService {
+
+    private static final List<User> clients = Arrays.asList(
+            // нет у меня в 8-ке никаких List.of()!
+            new User("user1", "1111", "Борис_Николаевич"),
+            new User("user2", "2222", "Мартин_Некотов"),
+            new User("user3", "3333", "Гендальф_Серый"),
+            new User("user4", "4444", "Найк_Дроздов"),
+            new User("admin", "1234", "Бывалый")
+    );
+
+    @Override
+    public void start() {
+        System.out.println("Сервис аутентификации запущен");
+        ServerApp.getLogFromServer().getFile().info("Сервис аутентификации запущен BaseAuthService");
+    }
+
+    @Override
+    public String getUsernameByLoginAndPassword(String login, String password) {
+        for (User client : clients) {
+            if(client.getLogin().equals(login) && client.getPassword().equals(password)) {
+                return client.getUsername();
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public void close() {
+        System.out.println("Сервис аутентификации завершен");
+        ServerApp.getLogFromServer().getFile().info("Сервис аутентификации завершен BaseAuthService");
+    }
+}
