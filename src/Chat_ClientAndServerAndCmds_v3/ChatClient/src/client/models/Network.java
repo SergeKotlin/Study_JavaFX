@@ -1,9 +1,10 @@
 package Chat_ClientAndServerAndCmds_v3.ChatClient.src.client.models;
 
-import Chat_ClientAndServerAndCmds_v3.ChatClient.src.client.NetworkClient;
+import Chat_ClientAndServerAndCmds_v3.ChatClient.src.NetworkClient;
 import Chat_ClientAndServerAndCmds_v3.ChatClient.src.client.controllers.ChatController;
 import Chat_ClientAndServerAndCmds_v3.ChatCommands.src.clientserver.Command;
 import Chat_ClientAndServerAndCmds_v3.ChatCommands.src.clientserver.commands.*;
+import Chat_ClientAndServerAndCmds_v3.ChatServer.src.ServerApp;
 import javafx.application.Platform;
 
 import java.io.*;
@@ -53,6 +54,7 @@ public class Network {
 
         } catch (IOException e) {
             System.out.println("Соединение не было установлено!");
+            ServerApp.getLogFromServer().getFile().warn("Соединение не было установлено Network");
             e.printStackTrace();
             return false;
         }
@@ -75,6 +77,7 @@ public class Network {
                Command command = readCommand();
                if(command == null) {
                    NetworkClient.showErrorMessage("Error","Ошибка серверва", "Получена неверная команда");
+                   ServerApp.getLogFromServer().getFile().error("Error Ошибка серверва Получена неверная команда Network");
                    continue;
                }
 
@@ -94,6 +97,7 @@ public class Network {
                        String errorMessage = data.getErrorMessage();
                        Platform.runLater(() -> {
                            NetworkClient.showErrorMessage("Error", "Server error", errorMessage);
+                           ServerApp.getLogFromServer().getFile().error("Error Server error Network| Error text: " + errorMessage);
                        });
                        break;
                    }
@@ -105,6 +109,7 @@ public class Network {
                    default:
                        Platform.runLater(() -> {
                            NetworkClient.showErrorMessage("Error","Unknown command from server!", command.getType().toString());
+                           ServerApp.getLogFromServer().getFile().error("Error Unknown command from server! Network| Unknown-command text: " + command.getType().toString());
                        });
                }
 
@@ -112,6 +117,7 @@ public class Network {
            } catch (IOException e) {
                e.printStackTrace();
                System.out.println("Соединение потеряно!");
+               ServerApp.getLogFromServer().getFile().warn("Соединение потеряно Network");
            }
        });
         thread.setDaemon(true);
@@ -126,6 +132,7 @@ public class Network {
 
             Command command = readCommand();
             if (command == null) {
+                ServerApp.getLogFromServer().getFile().error("Ошибка чтения команды с сервера Network");
                 return "Ошибка чтения команды с сервера";
             }
 
@@ -142,6 +149,7 @@ public class Network {
                     return data.getErrorMessage();
                 }
                 default:
+                    ServerApp.getLogFromServer().getFile().warn("Error Network| Unknown type of command: : " + command.getType());
                     return "Unknown type of command: " + command.getType();
 
             }
@@ -194,6 +202,7 @@ public class Network {
         } catch (ClassNotFoundException e) {
             String errorMessage = "Получен неизвестный объект";
             System.err.println(errorMessage);
+            ServerApp.getLogFromServer().getFile().warn("Получен неизвестный объект Network");
             e.printStackTrace();
             sendMessage(Command.errorCommand(errorMessage));
             return null;

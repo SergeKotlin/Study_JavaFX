@@ -1,6 +1,6 @@
 package Chat_ClientAndServerAndCmds_v3.ChatClient.src.client.controllers;
 
-import Chat_ClientAndServerAndCmds_v3.ChatClient.src.client.NetworkClient;
+import Chat_ClientAndServerAndCmds_v3.ChatClient.src.NetworkClient;
 import Chat_ClientAndServerAndCmds_v3.ChatClient.src.client.models.Network;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
